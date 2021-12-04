@@ -4,7 +4,6 @@ import { SlashCommandBuilder } from "@discordjs/builders";
 import { REST } from "@discordjs/rest";
 import { Routes } from "discord-api-types/v9";
 import config from "./config.js";
-import { resolve } from "path";
 import husbands from "./src/modules/husbands.js";
 
 const client = new Client({
@@ -42,7 +41,7 @@ client.once("ready", async () => {
 
     console.log(`${command.default.name} loaded`);
   }
-  /*
+  
   const Guilds = client.guilds.cache.map((guild) => guild.id);
   Guilds.forEach(async (guild_id) => {
     try {
@@ -54,7 +53,7 @@ client.once("ready", async () => {
     } catch (e) {
       console.log(e);
     }
-  });*/
+  });
 });
 
 client.on("interactionCreate", async (interaction) => {
