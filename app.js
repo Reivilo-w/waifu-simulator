@@ -3,6 +3,7 @@ import { Client, Collection, Intents } from "discord.js";
 import { SlashCommandBuilder } from "@discordjs/builders";
 import { REST } from "@discordjs/rest";
 import { Routes } from "discord-api-types/v9";
+import schedule from "node-schedule";
 import config from "./config.js";
 import husbands from "./src/modules/husbands.js";
 
@@ -41,7 +42,7 @@ client.once("ready", async () => {
 
     console.log(`${command.default.name} loaded`);
   }
-  
+
   const Guilds = client.guilds.cache.map((guild) => guild.id);
   Guilds.forEach(async (guild_id) => {
     try {
@@ -121,3 +122,19 @@ client.on("messageCreate", async (message) => {
 });
 
 client.login(config.token);
+
+schedule.scheduleJob("0 0 * * *", async () => {
+  fs.readFile("./husbands.js", "utf8", async (err, data) => {
+    if (err) return console.error(err);
+    const readableData = JSON.parse(data);
+    const newData = { husbands: [] };
+    for (const husbando of readableData.husbands) {
+      husbando.morning = false;
+      husbando.night = false;
+      newData.husbands.push(husbando);
+    }
+    fs.writeFile("./husbands.js", JSON.stringify(newData), (err) => {
+      if (err) return console.error(err);
+    });
+  });
+});
