@@ -55,6 +55,9 @@ client.once("ready", async () => {
       console.log(e);
     }
   });
+  // Créer fichier husbands.json si il n'existe pas
+  // Déplacer les créations de commandes lorsque le bot rejoins un serveur
+  // husbands dans gitignore
 });
 
 client.on("interactionCreate", async (interaction) => {
@@ -124,7 +127,7 @@ client.on("messageCreate", async (message) => {
 client.login(config.token);
 
 schedule.scheduleJob("0 0 * * *", async () => {
-  fs.readFile("./husbands.js", "utf8", async (err, data) => {
+  fs.readFile("./husbands.json", "utf8", async (err, data) => {
     if (err) return console.error(err);
     const readableData = JSON.parse(data);
     const newData = { husbands: [] };
@@ -133,7 +136,7 @@ schedule.scheduleJob("0 0 * * *", async () => {
       husbando.night = false;
       newData.husbands.push(husbando);
     }
-    fs.writeFile("./husbands.js", JSON.stringify(newData), (err) => {
+    fs.writeFile("./husbands.json", JSON.stringify(newData), (err) => {
       if (err) return console.error(err);
     });
   });
